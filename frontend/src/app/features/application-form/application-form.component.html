@@ -1,0 +1,61 @@
+<mat-card class="form-card">
+  <h2>{{ isEdit ? 'Başvuruyu Düzenle' : 'Yeni Başvuru' }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Şirket</mat-label>
+      <input matInput formControlName="company" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Pozisyon</mat-label>
+      <input matInput formControlName="position" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Platform / Kaynak</mat-label>
+      <input matInput formControlName="platform" placeholder="LinkedIn, Kariyer.net, Jobgether..." />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>İlan Linki</mat-label>
+      <input matInput formControlName="jobUrl" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Kullanılan CV Versiyonu</mat-label>
+      <input matInput formControlName="cvVersion" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Durum</mat-label>
+      <mat-select formControlName="status" required>
+        <mat-option *ngFor="let s of statusOptions" [value]="s">{{ statusLabel(s) }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Başvuru Tarihi</mat-label>
+      <input matInput [matDatepicker]="appliedPicker" formControlName="appliedDate" required />
+      <mat-datepicker-toggle matIconSuffix [for]="appliedPicker"></mat-datepicker-toggle>
+      <mat-datepicker #appliedPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Takip Tarihi</mat-label>
+      <input matInput [matDatepicker]="followPicker" formControlName="followUpDate" />
+      <mat-datepicker-toggle matIconSuffix [for]="followPicker"></mat-datepicker-toggle>
+      <mat-datepicker #followPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Notlar</mat-label>
+      <textarea matInput formControlName="notes" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="actions full-width">
+      <button mat-stroked-button type="button" (click)="cancel()">İptal</button>
+      <button mat-flat-button color="primary" type="submit">{{ isEdit ? 'Güncelle' : 'Kaydet' }}</button>
+    </div>
+  </form>
+</mat-card>

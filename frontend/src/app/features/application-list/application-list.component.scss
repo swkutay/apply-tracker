@@ -1,0 +1,22 @@
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.status-filter {
+  min-width: 240px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.empty-state {
+  color: rgba(0, 0, 0, 0.6);
+  padding: 32px 0;
+  text-align: center;
+}

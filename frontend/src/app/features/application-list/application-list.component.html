@@ -1,0 +1,65 @@
+<div class="header-row">
+  <h2>Başvurularım</h2>
+  <mat-form-field appearance="outline" class="status-filter">
+    <mat-label>Duruma göre filtrele</mat-label>
+    <mat-select [(ngModel)]="selectedStatus" (selectionChange)="onFilterChange()">
+      <mat-option value="">Tümü</mat-option>
+      <mat-option *ngFor="let s of statusOptions" [value]="s">{{ statusLabel(s) }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<table mat-table [dataSource]="applications" class="mat-elevation-z1 full-width" *ngIf="applications.length; else empty">
+  <ng-container matColumnDef="company">
+    <th mat-header-cell *matHeaderCellDef>Şirket</th>
+    <td mat-cell *matCellDef="let app">{{ app.company }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef>Pozisyon</th>
+    <td mat-cell *matCellDef="let app">{{ app.position }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="platform">
+    <th mat-header-cell *matHeaderCellDef>Platform</th>
+    <td mat-cell *matCellDef="let app">{{ app.platform || '—' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Durum</th>
+    <td mat-cell *matCellDef="let app">
+      <mat-chip-set>
+        <mat-chip>{{ statusLabel(app.status) }}</mat-chip>
+      </mat-chip-set>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="appliedDate">
+    <th mat-header-cell *matHeaderCellDef>Başvuru Tarihi</th>
+    <td mat-cell *matCellDef="let app">{{ app.appliedDate }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="followUpDate">
+    <th mat-header-cell *matHeaderCellDef>Takip Tarihi</th>
+    <td mat-cell *matCellDef="let app">{{ app.followUpDate || '—' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let app">
+      <a mat-icon-button [routerLink]="['/applications', app.id, 'edit']" aria-label="Düzenle">
+        <mat-icon>edit</mat-icon>
+      </a>
+      <button mat-icon-button color="warn" (click)="remove(app)" aria-label="Sil">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<ng-template #empty>
+  <p class="empty-state" *ngIf="!loading">Henüz başvuru eklenmedi. "Yeni Başvuru" ile başla.</p>
+</ng-template>
