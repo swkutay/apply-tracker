@@ -3,7 +3,14 @@
 Kendi iş başvurularını (şirket, pozisyon, durum, takip tarihi, kullanılan CV versiyonu vb.)
 takip etmek için full-stack bir web uygulaması.
 
-**Stack:** Spring Boot (Java, REST API) · PostgreSQL · Angular + Angular Material · Docker
+**Stack:** Spring Boot (Java, REST API) · PostgreSQL · Angular + Angular Material · Docker · Railway
+
+## 🚀 Canlı Demo
+
+- **Uygulama:** https://frontend-production-8c90.up.railway.app
+- **Backend API:** https://apply-tracker-production.up.railway.app/api/applications
+
+> Railway'in ücretsiz katmanında barındırılıyor; ilk istek birkaç saniye sürebilir (uyku modundan uyanma).
 
 ## Hızlı Başlangıç (Docker ile — önerilen)
 
@@ -83,10 +90,22 @@ apply-tracker/
 
 Durum (`status`) değerleri: `APPLIED, REVIEWING, INTERVIEW_PENDING, INTERVIEWED, OFFER, REJECTED, WITHDRAWN`
 
+## Deploy Mimarisi
+
+Uygulama Railway üzerinde 3 ayrı servis olarak çalışıyor:
+
+- **PostgreSQL** — Railway'in yönettiği veritabanı servisi
+- **Backend** — `backend/Dockerfile` ile build edilen Spring Boot API, Postgres'e Railway'in
+  private network'ü üzerinden bağlanıyor
+- **Frontend** — `frontend/Dockerfile` ile build edilen, Nginx üzerinden servis edilen Angular
+  production build'i; backend'e public URL üzerinden istek atıyor
+
+Her `main` branch'e push, GitHub entegrasyonu üzerinden Railway'de otomatik yeniden deploy tetikler.
+
 ## AI-Assisted Development
 
-Bu projenin backend ve frontend kod iskeleti, kod tabanı ve Docker altyapısı Claude ile
-birlikte, AI destekli bir geliştirme akışıyla oluşturuldu:
+Bu projenin backend ve frontend kod iskeleti, kod tabanı, Docker altyapısı ve Railway deploy
+süreci Claude ile birlikte, AI destekli bir geliştirme akışıyla oluşturuldu:
 
 - Frontend gerçek Angular CLI ile scaffold edildi ve **derlenerek doğrulandı** (`ng build` başarılı).
 - Backend kodu elle yazıldı; kod incelemesi ve derleme doğrulaması geliştirici tarafında
@@ -94,6 +113,9 @@ birlikte, AI destekli bir geliştirme akışıyla oluşturuldu:
   alınmaması gerektiğinin bilinçli bir örneğidir.
 - Mimari kararlar (DTO/entity ayrımı, global exception handling, CORS, Docker multi-stage build)
   bilinçli olarak seçildi ve gerekçelendirildi.
+- Deploy sürecinde karşılaşılan gerçek sorunlar (Railway private network DNS davranışı, Spring'in
+  wildcard CORS origin desteklememesi, Angular production build'inde `fileReplacements`
+  eksikliği) log analiziyle teşhis edilip tek tek çözüldü.
 
 ## Lisans
 
